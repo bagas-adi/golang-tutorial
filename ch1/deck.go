@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+)
 
 // Create a new type of deck
 // which is a slice of strings
@@ -9,7 +12,14 @@ type deck []string
 
 func main() {
 	cards := newCards()
-	cards.print()
+
+	// fmt.Println([]byte(cards.toString()))
+	cards.saveToFile("list-deck.txt")
+	// myHand1, remainingCards := deal(cards, 5)
+	// fmt.Println("Remaining Cards : ")
+	// remainingCards.print()
+	// fmt.Println("My Hand : ")
+	// myHand1.print()
 }
 
 func newCards() deck {
@@ -18,15 +28,41 @@ func newCards() deck {
 	cardSuits := []string{"Wajik", "Hati", "Keriting", "Sekop"}
 	cardValues := []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "King", "Queen", "Knight", "Joker"}
 
-	for i := range cardSuits {
-		// fmt.Println(cardSuits[i])
-		for j := range cardValues {
-			cardStr = cardValues[j] + " " + cardSuits[i]
+	for _, cardSuit := range cardSuits {
+		for _, cardValue := range cardValues {
+			cardStr = cardValue + " " + cardSuit
 			cards = append(cards, cardStr)
-			// fmt.Println(cardStr)
 		}
 	}
+	// Another For loops
+	// for i := range cardSuits {
+	// 	for j := range cardValues {
+	// 		cardStr = cardValues[j] + " " + cardSuits[i]
+	// 		cards = append(cards, cardStr)
+	// 	}
+	// }
 	return cards
+}
+
+func deal(d deck, handSize int) (deck, deck) {
+	return d[:handSize], d[handSize:]
+}
+func (d deck) saveToFile(filename string) error {
+	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
+}
+
+func (d deck) toString() string {
+	var strReturn string
+	for i, card := range d {
+		if i == 0 {
+			strReturn += card
+		} else if i == len(card)-1 {
+			strReturn += card
+		} else {
+			strReturn += ", " + card
+		}
+	}
+	return strReturn
 }
 
 // Receiver Function
