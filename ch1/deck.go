@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
+	"os"
 	"strings"
+	"time"
 )
 
 // Create a new type of deck
@@ -13,9 +16,8 @@ type deck []string
 
 func main() {
 	cards := newDeckFromFile("list-deck.txt")
-
-	fmt.Println(cards.toString())
-
+	fmt.Println(cards.shuffle().toString())
+	// cards.saveToFile("list-deck.txt")
 	// myHand1, remainingCards := deal(cards, 5)
 	// fmt.Println("Remaining Cards : ")
 	// remainingCards.print()
@@ -49,9 +51,17 @@ func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
 }
 func newDeckFromFile(filename string) deck {
-	byteIinput, _ := ioutil.ReadFile(filename)
+	byteIinput, err := ioutil.ReadFile(filename)
+	// If you don't want to use another return - byteIinput, _ := ioutil.ReadFile(filename)
 	strInput := string(byteIinput)
-	// log.Print(err)
+
+	// Option #1 - log the err and return a call to newDeck()
+	// Option #2 - log the err and entirely quit the program
+	if err != nil {
+		fmt.Println("Error : ", err)
+		os.Exit(1)
+	}
+
 	return deck(strings.Split(strInput, ","))
 }
 
@@ -61,10 +71,11 @@ func (d deck) saveToFile(filename string) error {
 
 func (d deck) toString() string {
 	var strReturn string
+	// strReturn := strings.Join(d, ",")
 	for i, card := range d {
 		if i == 0 {
 			strReturn += card
-		} else if i == len(card)-1 {
+		} else if i == len(d)-1 {
 			strReturn += card
 		} else {
 			strReturn += ", " + card
@@ -77,5 +88,15 @@ func (d deck) toString() string {
 func (d deck) print() {
 	for i, card := range d {
 		fmt.Println(i, card)
+	}
+}
+
+func (d deck) shuffle() {
+	t := time.Now().UnixNano()
+	source := rand.NewSource(t)
+	r := rand.New(source)
+	for i := range d {
+		newPosition := r.Intn(len(d) - 1)
+		d[i], d[newPosition] = d[newPosition], d[i]
 	}
 }
