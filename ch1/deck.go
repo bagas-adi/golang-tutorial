@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 // Create a new type of deck
@@ -11,10 +12,10 @@ import (
 type deck []string
 
 func main() {
-	cards := newCards()
+	cards := newDeckFromFile("list-deck.txt")
 
-	// fmt.Println([]byte(cards.toString()))
-	cards.saveToFile("list-deck.txt")
+	fmt.Println(cards.toString())
+
 	// myHand1, remainingCards := deal(cards, 5)
 	// fmt.Println("Remaining Cards : ")
 	// remainingCards.print()
@@ -47,6 +48,13 @@ func newCards() deck {
 func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
 }
+func newDeckFromFile(filename string) deck {
+	byteIinput, _ := ioutil.ReadFile(filename)
+	strInput := string(byteIinput)
+	// log.Print(err)
+	return deck(strings.Split(strInput, ","))
+}
+
 func (d deck) saveToFile(filename string) error {
 	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
 }
