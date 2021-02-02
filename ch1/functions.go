@@ -8,9 +8,9 @@ import "fmt"
 // 	fmt.Println(card)
 // }
 
-func newCard() string {
-	return "Five of Diamonds"
-}
+// func newCard() string {
+// 	return "Five of Diamonds"
+// }
 
 func printState() {
 	fmt.Println("Test")

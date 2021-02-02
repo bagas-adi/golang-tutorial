@@ -14,16 +14,16 @@ import (
 
 type deck []string
 
-func main() {
-	cards := newDeckFromFile("list-deck.txt")
-	fmt.Println(cards.shuffle().toString())
-	// cards.saveToFile("list-deck.txt")
-	// myHand1, remainingCards := deal(cards, 5)
-	// fmt.Println("Remaining Cards : ")
-	// remainingCards.print()
-	// fmt.Println("My Hand : ")
-	// myHand1.print()
-}
+// func main() {
+// 	cards := newDeckFromFile("list-deck.txt")
+// 	fmt.Println(cards.shuffle().toString())
+// 	// cards.saveToFile("list-deck.txt")
+// 	// myHand1, remainingCards := deal(cards, 5)
+// 	// fmt.Println("Remaining Cards : ")
+// 	// remainingCards.print()
+// 	// fmt.Println("My Hand : ")
+// 	// myHand1.print()
+// }
 
 func newCards() deck {
 	cards := deck{}

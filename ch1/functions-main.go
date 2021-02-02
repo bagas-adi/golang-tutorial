@@ -4,6 +4,6 @@ package main
 
 // var card string = "Ace of Spades"
 
-func main() {
-	printState()
-}
+// func main() {
+// 	printState()
+// }
